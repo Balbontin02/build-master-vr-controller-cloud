@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    @apply bg-zinc-950 text-zinc-100 antialiased;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  ::selection {
+    @apply bg-sky-500/30;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-zinc-800 bg-zinc-900/60;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 px-4 py-2 text-sm font-bold text-zinc-950 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-zinc-700/70 bg-zinc-800/60 px-4 py-2 text-sm font-semibold text-zinc-200 transition hover:bg-zinc-700/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-scene {
+    @apply inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-zinc-700/60 bg-zinc-800/60 px-4 py-5 text-base font-bold text-zinc-100 transition hover:border-zinc-600 hover:bg-zinc-700/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-scene-active {
+    @apply border-emerald-400/70 bg-emerald-400/10 text-emerald-300 hover:border-emerald-400/80 hover:bg-emerald-400/15;
+  }
+  .btn-scene-pending {
+    @apply border-sky-400/70 bg-sky-400/10 text-sky-300;
+  }
+  .code-block {
+    @apply max-h-64 w-full overflow-auto rounded-xl border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] leading-relaxed text-zinc-300 break-all;
+  }
+}

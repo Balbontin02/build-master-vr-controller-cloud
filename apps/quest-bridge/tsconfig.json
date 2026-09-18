@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM"],
+    "baseUrl": ".",
+    "paths": {
+      "@bmvr/shared": ["../../packages/shared/src/index.ts"],
+      "@bmvr/shared/*": ["../../packages/shared/src/*"]
+    }
+  },
+  "include": ["src"]
+}

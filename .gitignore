@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.log
+.env
+.env.local
+
+# certificados self-signed locales (se regeneran automáticamente)
+apps/server/certs/
+
+.DS_Store
+Thumbs.db
