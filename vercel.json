@@ -2,7 +2,6 @@
   "buildCommand": "npm run build:controller",
   "outputDirectory": "apps/controller/dist",
   "installCommand": "npm install",
-  "framework": "vite",
   "rewrites": [
     {
       "source": "/(.*)",
