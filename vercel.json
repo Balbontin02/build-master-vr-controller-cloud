@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build:controller",
-  "outputDirectory": "apps/controller/dist",
+  "outputDirectory": "dist",
   "installCommand": "npm install",
   "rewrites": [
     {
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "source": "/icons/(.*)",
+      "source": "/icons/(*.*)",
       "headers": [
         {
           "key": "Cache-Control",
