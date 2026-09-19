@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
-const isVercel = process.env.VERCEL === '1';
-
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -12,7 +10,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: isVercel ? path.resolve(__dirname, '../../dist') : 'dist',
+    outDir: 'dist',
     emptyOutDir: true,
     chunkSizeWarningLimit: 700,
   },
