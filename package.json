@@ -19,7 +19,7 @@
     "build:shared": "npm run typecheck --workspace packages/shared",
     "build:bookmarklet": "npm run build --workspace apps/quest-bridge",
     "build:bookmarklet:prod": "npm run build --workspace apps/quest-bridge",
-    "build:controller": "npm run build --workspace apps/controller",
+    "build:controller": "cd apps/controller && npm run build",
     "build:server": "npm run build --workspace apps/server",
     "start": "npm run build && npm run start --workspace apps/server",
     "lint": "eslint . --max-warnings 0",
