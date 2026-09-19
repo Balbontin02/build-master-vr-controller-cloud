@@ -19,7 +19,7 @@
     "build:shared": "npm run typecheck --workspace packages/shared",
     "build:bookmarklet": "npm run build --workspace apps/quest-bridge",
     "build:bookmarklet:prod": "npm run build --workspace apps/quest-bridge",
-    "build:controller": "cd apps/controller && npm run build && cd ../.. && xcopy /E /I /Y apps\\controller\\dist dist",
+    "build:controller": "cd apps/controller && npm run build && cd ../.. && node -e \"const fs=require('fs');fs.cpSync('apps/controller/dist','dist',{recursive:true});console.log('Copied to dist/')\"",
     "build:server": "npm run build --workspace apps/server",
     "start": "npm run build && npm run start --workspace apps/server",
     "lint": "eslint . --max-warnings 0",
