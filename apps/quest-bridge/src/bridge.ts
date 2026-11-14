@@ -88,14 +88,22 @@ export function createBridge(overrides: Partial<BridgeConfig> = {}): BuildMaster
   }
 
   function promptForCode(): void {
-    const answer = window.prompt('Código de sesión Build Master VR (ej. ZIMA-7421):', '');
+    const answer = window.prompt(
+      'Código de sesión Build Master VR (ej. ZIMA-7421):\n\nSi también tienes el token, escríbelo después del código separado por coma (ej. ZIMA-7421,ABC123). Si no, solo el código.',
+      '',
+    );
     if (!answer || !answer.trim()) return;
-    cfg.code = answer.trim().toUpperCase();
-    if (!cfg.token) {
+    const parts = answer.trim().split(/[,\s]+/);
+    cfg.code = parts[0].toUpperCase();
+    if (parts.length > 1 && parts[1]) {
+      cfg.token = normalizeToken(parts[1]);
+    } else if (!cfg.token) {
       const tokenAnswer = window.prompt('Token de sesión Build Master VR:', '');
-      if (!tokenAnswer || !tokenAnswer.trim()) return;
-      cfg.token = normalizeToken(tokenAnswer);
+      if (tokenAnswer && tokenAnswer.trim()) {
+        cfg.token = normalizeToken(tokenAnswer);
+      }
     }
+    if (!cfg.code) return;
     writeConfig(cfg);
     overlay('joining');
     send(MessageType.SessionJoin, { code: cfg.code, token: cfg.token });
