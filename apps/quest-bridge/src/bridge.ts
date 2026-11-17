@@ -92,13 +92,24 @@ export function createBridge(overrides: Partial<BridgeConfig> = {}): BuildMaster
     if (!answer || !answer.trim()) return;
     cfg.code = answer.trim().toUpperCase();
     if (!cfg.token) {
-      const tokenAnswer = window.prompt('Token de sesión Build Master VR:', '');
-      if (!tokenAnswer || !tokenAnswer.trim()) return;
-      cfg.token = normalizeToken(tokenAnswer);
+      // Usar setTimeout para evitar que el navegador bloquee el segundo prompt
+      // (algunos navegadores, como el de Quest, bloquean prompts consecutivos)
+      setTimeout(() => {
+        const tokenAnswer = window.prompt('Token de sesión Build Master VR:', '');
+        if (tokenAnswer && tokenAnswer.trim()) {
+          cfg.token = normalizeToken(tokenAnswer);
+        }
+        if (cfg.token) {
+          writeConfig(cfg);
+          overlay('joining');
+          send(MessageType.SessionJoin, { code: cfg.code, token: cfg.token });
+        }
+      }, 100);
+    } else {
+      writeConfig(cfg);
+      overlay('joining');
+      send(MessageType.SessionJoin, { code: cfg.code, token: cfg.token });
     }
-    writeConfig(cfg);
-    overlay('joining');
-    send(MessageType.SessionJoin, { code: cfg.code, token: cfg.token });
   }
 
   function resolveWsUrl(): string {
