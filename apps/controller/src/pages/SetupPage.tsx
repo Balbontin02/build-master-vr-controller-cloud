@@ -29,7 +29,9 @@ export function SetupPage() {
   const [token, setToken] = useState(params.get('token') ?? '');
   const [deviceName, setDeviceName] = useState('');
   const [debug, setDebug] = useState(false);
-  const [productionWssUrl, setProductionWssUrl] = useState(import.meta.env.VITE_PRODUCTION_WSS_URL || '');
+  const [productionWssUrl, setProductionWssUrl] = useState(
+    import.meta.env.VITE_PRODUCTION_WSS_URL || import.meta.env.VITE_WS_URL || ''
+  );
 
   useEffect(() => {
     getConfig()
@@ -42,10 +44,20 @@ export function SetupPage() {
         setHostOptions(hosts);
         setHost(params.get('host') || hosts[0] || 'localhost');
       })
-      .catch(() => setError('No se pudo cargar la configuración del servidor.'));
-    getBookmarklet()
-      .then((b) => setBundle(b.bundle))
-      .catch(() => setError('El bookmarklet aún no existe. Ejecuta: npm run build:bookmarklet'));
+      .catch(() => setError('No se pudo cargar la configuración del servidor (modo offline).'));
+    // Intentar cargar bundle desde archivo estático (Vercel) o desde API (local)
+    fetch('/quest-bridge.min.js')
+      .then((r) => {
+        if (!r.ok) throw new Error('not found');
+        return r.text();
+      })
+      .then((b) => setBundle(b))
+      .catch(() => {
+        // Fallback a API local
+        getBookmarklet()
+          .then((b) => setBundle(b.bundle))
+          .catch(() => setError('El bookmarklet aún no existe. Ejecuta: npm run build:bookmarklet'));
+      });
   }, [params]);
 
   const cfg = useMemo(() => {
@@ -132,11 +144,11 @@ export function SetupPage() {
             className="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm font-mono text-zinc-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
           />
         </label>
-        {import.meta.env.VITE_PRODUCTION_WSS_URL && (
+        {import.meta.env.VITE_PRODUCTION_WSS_URL || import.meta.env.VITE_WS_URL ? (
           <p className="mt-2 text-xs text-emerald-300">
-            Valor por defecto (build): <code className="font-mono text-zinc-200">{import.meta.env.VITE_PRODUCTION_WSS_URL}</code>
+            Valor por defecto (build): <code className="font-mono text-zinc-200">{import.meta.env.VITE_PRODUCTION_WSS_URL || import.meta.env.VITE_WS_URL}</code>
           </p>
-        )}
+        ) : null}
       </section>
 
       <section className="card p-6">
